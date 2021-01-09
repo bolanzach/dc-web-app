@@ -1,26 +1,28 @@
 <script context="module">
-	export function preload() {
+	import getWeapons from "../utils/proxy/getWeapons";
 
-    return {
+	export async function preload() {
+		const weapons = await getWeapons();
+
+		return {
 			equipment: {
-				weapons: [
-					{ name: 'EXECUTIONER'},
-					{ name: 'DOOM'},
-				],
-				armor: [
-					{ name: 'jack'},
-					{ name: 'jill'},
-				],
+				weapons: [{ name: "EXECUTIONER" }, { name: "asd" }],
+				armor: [{ name: "jack" }, { name: "jill" }],
 			},
-    };
+			weapons,
+		};
 	}
 </script>
 
 <script>
-	import EquipmentNavbar from '../components/equipment/Navbar'
-	import LeftRail from '../components/equipment/LeftRail';
+	import EquipmentNavbar from "../components/equipment/Navbar";
+	import LeftRail from "../components/equipment/LeftRail";
+	import { onMount } from "svelte";
 
 	export let equipment;
+	export let weapons;
+
+	console.log(weapons);
 
 	let leftRailItems = equipment.weapons || [];
 
@@ -32,19 +34,19 @@
 
 	const onEquipmentItemSelect = (item) => {
 		console.log(item);
-	}
+	};
 </script>
-
-<div>
-	<EquipmentNavbar onSelectTab={onSelectTab} />
-	<div class="layout">
-		<LeftRail items={leftRailItems} onItemSelect={onEquipmentItemSelect} />
-		<slot></slot>
-	</div>
-</div>
 
 <style>
 	.layout {
 		display: flex;
 	}
 </style>
+
+<div>
+	<EquipmentNavbar {onSelectTab} />
+	<div class="layout">
+		<LeftRail items={leftRailItems} onItemSelect={onEquipmentItemSelect} />
+		<slot />
+	</div>
+</div>
